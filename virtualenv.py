@@ -2,14 +2,11 @@ import wingapi
 import os
 
 
-_APP = wingapi.gApplication
-_PROJECT = _APP.GetProject()
-
 APP = wingapi.gApplication
 PROJECT = APP.GetProject()
-PROJECT_PATH = str(PROJECT.GetFilename())
-PROJECT_NAME = PROJECT_PATH.split('/')[-1]
-VENV_PATH = os.path.join(PROJECT_PATH.replace(PROJECT_NAME, ''), 'venv')
+PROJECT_PATH = os.path.dirname(str(PROJECT.GetFilename()))
+
+VENV_PATH = os.path.join(PROJECT_PATH, 'venv')
 
 
 def new_virtualenv(python_version):
@@ -39,7 +36,7 @@ def install_requirements():
         else:
             pip_path = os.path.join(VENV_PATH,'Scripts','pip')
 
-        requirements_path = os.path.join(PROJECT_PATH.replace(PROJECT_NAME,''),'requirements.txt')
+        requirements_path = os.path.join(PROJECT_PATH,'requirements.txt')
         command = '{} install -r {}'.format(pip_path,requirements_path)
         os.system(command)
         APP.ShowMessageDialog('Install Requiments','Application dependecies installed successfully.\n'+command)
